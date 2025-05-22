@@ -1,12 +1,134 @@
-import { useState } from "react";
-import "./App.css";
+// App.jsx
+import { useState, useEffect } from "react";
 import SearchBar from "./components/SearchBar";
+import BookCard from "./components/BookCard";
+import Pagination from "./components/Pagination";
 
 function App() {
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [query, setQuery] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleSearch = async (searchTerm) => {
+    setLoading(true);
+    setError(null);
+    setHasSearched(true);
+    setPage(1);
+    setQuery("");
+
+    try {
+      const res = await fetch(
+        `https://openlibrary.org/search.json?q=${searchTerm}&page=1`
+      );
+      const data = await res.json();
+
+      setBooks(data.docs);
+      setTotalPages(Math.ceil(data.numFound / 100));
+      setQuery(searchTerm);
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchBooksForPage = async (pageNumber) => {
+    setLoading(true);
+    setError(null);
+    setPage(pageNumber);
+
+    try {
+      const res = await fetch(
+        `https://openlibrary.org/search.json?q=${query}&page=${pageNumber}`
+      );
+      const data = await res.json();
+
+      setBooks(data.docs);
+      setTotalPages(Math.ceil(data.numFound / 100));
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <>
-      <SearchBar onSearch={(query) => console.log(query)} />
-    </>
+    <div className="bg-base-200 min-h-screen px-4 relative pb-10">
+      {/* Title and description */}
+      <div className="text-center pt-20 pb-6">
+        <h1 className="text-5xl font-bold text-base-content mb-2">BookQuest</h1>
+        <p className="text-base-content/70">
+          Search and explore books from the Open Library
+        </p>
+      </div>
+
+      {/* Search bar */}
+      <SearchBar query={query} setQuery={setQuery} onSearch={handleSearch} />
+
+      {/* Loading spinner */}
+      {loading && (
+        <div className="flex justify-center items-center py-8">
+          <span className="loading loading-spinner loading-lg text-primary"></span>
+        </div>
+      )}
+
+      {/* Error message */}
+      {error && (
+        <div className="text-center py-4 text-lg text-white font-semibold bg-red-500 rounded">
+          {error}
+        </div>
+      )}
+
+      {/* No results message */}
+      {!loading && hasSearched && books.length === 0 && (
+        <div className="text-center py-4 text-warning font-medium">
+          No results found.
+        </div>
+      )}
+
+      {/* Book list */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-10 pb-4">
+        {books.map((book) => (
+          <BookCard key={book.key} book={book} />
+        ))}
+      </div>
+
+      {/* Pagination controls */}
+      {books.length > 0 && (
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={fetchBooksForPage}
+        />
+      )}
+
+      {/* Back to top button */}
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="btn btn-circle fixed bottom-6 right-6 bg-black text-white shadow-lg hover:opacity-90"
+          aria-label="Back to top"
+        >
+          ↑
+        </button>
+      )}
+    </div>
   );
 }
 
