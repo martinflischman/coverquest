@@ -1,56 +1,55 @@
 // Pagination.jsx
 import React from "react";
-import {
-  FaAngleDoubleLeft,
-  FaAngleLeft,
-  FaAngleRight,
-  FaAngleDoubleRight,
-} from "react-icons/fa";
+import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 
+/**
+ * Pagination component used in CoverQuest to navigate between pages of book results.
+ * Displays first, previous, next, and last page controls.
+ */
 function Pagination({ page, totalPages, onPageChange }) {
   const canGoPrev = page > 1;
   const canGoNext = page < totalPages;
 
   return (
-    <div className="flex justify-center items-center gap-2 mt-10 mb-6">
-      {/* Jump to First Page */}
+    <div className="flex justify-center items-center gap-3 mt-10">
+      {/* First Page Button */}
       <button
+        className="btn btn-sm bg-black text-white hover:opacity-90"
         onClick={() => onPageChange(1)}
         disabled={!canGoPrev}
-        className="btn btn-circle text-white bg-black hover:opacity-90 disabled:opacity-40"
         aria-label="First Page"
       >
         <FaAngleDoubleLeft />
       </button>
 
-      {/* Previous Page */}
+      {/* Previous Page Button */}
       <button
+        className="btn btn-sm bg-black text-white hover:opacity-90"
         onClick={() => onPageChange(page - 1)}
         disabled={!canGoPrev}
-        className="btn text-white bg-black hover:opacity-90 disabled:opacity-40"
       >
         Prev
       </button>
 
-      {/* Page indicator */}
-      <span className="text-sm font-medium text-base-content/70 px-2">
+      {/* Current Page Display */}
+      <span className="text-sm font-medium text-base-content/70">
         Page {page} of {totalPages}
       </span>
 
-      {/* Next Page */}
+      {/* Next Page Button */}
       <button
+        className="btn btn-sm bg-black text-white hover:opacity-90"
         onClick={() => onPageChange(page + 1)}
         disabled={!canGoNext}
-        className="btn text-white bg-black hover:opacity-90 disabled:opacity-40"
       >
         Next
       </button>
 
-      {/* Jump to Last Page */}
+      {/* Last Page Button */}
       <button
+        className="btn btn-sm bg-black text-white hover:opacity-90"
         onClick={() => onPageChange(totalPages)}
         disabled={!canGoNext}
-        className="btn btn-circle text-white bg-black hover:opacity-90 disabled:opacity-40"
         aria-label="Last Page"
       >
         <FaAngleDoubleRight />

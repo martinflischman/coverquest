@@ -5,6 +5,7 @@ import BookCard from "./components/BookCard";
 import Pagination from "./components/Pagination";
 
 function App() {
+  // State hooks for handling app data and UI
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -14,6 +15,7 @@ function App() {
   const [totalPages, setTotalPages] = useState(1);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
+  // Show "Back to top" button after scrolling
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 100);
@@ -23,6 +25,7 @@ function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Handles the initial search
   const handleSearch = async (searchTerm) => {
     setLoading(true);
     setError(null);
@@ -47,6 +50,7 @@ function App() {
     }
   };
 
+  // Fetches books for a specific page
   const fetchBooksForPage = async (pageNumber) => {
     setLoading(true);
     setError(null);
@@ -70,46 +74,48 @@ function App() {
 
   return (
     <div className="bg-base-200 min-h-screen px-4 relative pb-10">
-      {/* Title and description */}
+      {/* App Title & Tagline */}
       <div className="text-center pt-20 pb-6">
-        <h1 className="text-5xl font-bold text-base-content mb-2">BookQuest</h1>
+        <h1 className="text-5xl font-bold text-base-content mb-2">
+          📚 CoverQuest
+        </h1>
         <p className="text-base-content/70">
           Search and explore books from the Open Library
         </p>
       </div>
 
-      {/* Search bar */}
+      {/* Search Bar */}
       <SearchBar query={query} setQuery={setQuery} onSearch={handleSearch} />
 
-      {/* Loading spinner */}
+      {/* Loading State */}
       {loading && (
         <div className="flex justify-center items-center py-8">
           <span className="loading loading-spinner loading-lg text-primary"></span>
         </div>
       )}
 
-      {/* Error message */}
+      {/* Error State */}
       {error && (
         <div className="text-center py-4 text-lg text-white font-semibold bg-red-500 rounded">
           {error}
         </div>
       )}
 
-      {/* No results message */}
+      {/* No Results Message */}
       {!loading && hasSearched && books.length === 0 && (
         <div className="text-center py-4 text-warning font-medium">
           No results found.
         </div>
       )}
 
-      {/* Book list */}
+      {/* Book Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-10 pb-4">
         {books.map((book) => (
           <BookCard key={book.key} book={book} />
         ))}
       </div>
 
-      {/* Pagination controls */}
+      {/* Pagination Controls */}
       {books.length > 0 && (
         <Pagination
           page={page}
@@ -118,7 +124,7 @@ function App() {
         />
       )}
 
-      {/* Back to top button */}
+      {/* Scroll-to-top Button */}
       {showScrollTop && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
