@@ -2,7 +2,7 @@
 
 A modern, responsive web application for searching and exploring books from the Open Library database. Built with React and styled with Tailwind CSS and DaisyUI.
 
-![CoverQuest Desktop View](/public/images/coverquest-mobile.png.png)
+![CoverQuest Desktop View](/public/images/coverquest-desktop.png.png)
 
 ## ✨ Features
 
