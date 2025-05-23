@@ -73,13 +73,13 @@ function App() {
   };
 
   return (
-    <div className="bg-base-200 min-h-screen px-4 relative pb-10">
+    <div className="bg-base-200 min-h-screen px-2 sm:px-4 relative pb-10">
       {/* App Title & Tagline */}
-      <div className="text-center pt-20 pb-6">
-        <h1 className="text-5xl font-bold text-base-content mb-2">
+      <div className="text-center pt-12 sm:pt-16 lg:pt-20 pb-4 sm:pb-6">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-base-content mb-2">
           📚 CoverQuest
         </h1>
-        <p className="text-base-content/70">
+        <p className="text-sm sm:text-base text-base-content/70 px-4">
           Search and explore books from the Open Library
         </p>
       </div>
@@ -96,7 +96,7 @@ function App() {
 
       {/* Error State */}
       {error && (
-        <div className="text-center py-4 text-lg text-white font-semibold bg-red-500 rounded">
+        <div className="text-center py-4 text-sm sm:text-lg text-white font-semibold bg-red-500 rounded mx-2">
           {error}
         </div>
       )}
@@ -109,7 +109,7 @@ function App() {
       )}
 
       {/* Book Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-10 pb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 pt-6 sm:pt-10 pb-4">
         {books.map((book) => (
           <BookCard key={book.key} book={book} />
         ))}
@@ -128,7 +128,7 @@ function App() {
       {showScrollTop && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="btn btn-circle fixed bottom-6 right-6 bg-black text-white shadow-lg hover:opacity-90"
+          className="btn btn-circle fixed bottom-6 right-4 sm:right-6 bg-black text-white shadow-lg hover:opacity-90 z-10"
           aria-label="Back to top"
         >
           ↑
