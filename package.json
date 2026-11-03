@@ -27,5 +27,10 @@
     "globals": "^16.0.0",
     "tailwindcss": "^4.1.7",
     "vite": "^6.3.5"
+  },
+  "allowScripts": {
+    "@tailwindcss/oxide@4.1.7": true,
+    "fsevents@2.3.3": true,
+    "esbuild@0.25.12": true
   }
 }
